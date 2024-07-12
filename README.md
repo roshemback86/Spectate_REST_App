@@ -1,2 +1,3 @@
-Spectate REST App
-Simple CRUD sportsbook application
+### Spectate REST App
+
+*Simple CRUD sportsbook application*
