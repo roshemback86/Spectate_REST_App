@@ -22,7 +22,7 @@ class Event(BaseModel):
     status: StatusEnum
     scheduled_start: datetime
     actual_start: Optional[datetime] = None
-    logos: Optional[str] = None
+    logos: Optional[str] = Field(None, example="url")
 
 
 class Selection(BaseModel):
