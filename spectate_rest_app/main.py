@@ -3,6 +3,7 @@ import uvicorn
 import sqlite3
 import httpx
 from typing import List, Optional
+import requests
 
 # from spectate_rest_app.services import get_logos
 from .schemas import Sport, Event, Selection
@@ -20,7 +21,7 @@ async def fetch_logos(teams: List[str]) -> str:
                 response = await client.get(f"https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t={team}")
                 response.raise_for_status()
                 data = response.json()
-                logo = data['teams'][0]['strTeamBadge'] if data['teams'] else ""
+                logo = data['teams'][0]['strBadge'] if data['teams'] else ""
                 logos.append(logo)
             except Exception as e:
                 logos.append("")
