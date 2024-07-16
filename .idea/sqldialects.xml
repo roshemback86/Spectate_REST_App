@@ -2,5 +2,8 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/spectate_rest_app/main.py" dialect="SQLite" />
+    <file url="file://$PROJECT_DIR$/spectate_rest_app/routers/event.py" dialect="SQLite" />
+    <file url="file://$PROJECT_DIR$/spectate_rest_app/routers/sport.py" dialect="SQLite" />
+    <file url="PROJECT" dialect="SQLite" />
   </component>
 </project>
