@@ -12,7 +12,6 @@ async def create_selection(selection: Selection):
     '''Create a new selection'''
     if not selection.name or not selection.event or not selection.price or not selection.outcome:
         raise HTTPException(status_code=400, detail="Required fields: name, event, price, outcome")
-
     active = True if selection.active else False
     selection.price = Decimal(selection.price)
     query = """
@@ -26,6 +25,30 @@ async def create_selection(selection: Selection):
         cursor.execute(query, (
             selection.name, selection.event, active, float(selection.price), selection.outcome
         ))
+        conn.commit()
+        selection_id = cursor.lastrowid
+        conn.close()
+        return {"id": selection_id}
+    except sqlite3.Error as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+
+
+
+@router.put("/selection/{selection_id}")
+async def update_selection(selection_id: int, selection: Selection):
+    if not selection.name or not selection.event or not selection.price or not selection.outcome:
+        raise HTTPException(status_code=400, detail="Required fields: name, event, price, outcome")
+    query = """
+        UPDATE selection 
+        SET name = ?, event = ?, active = ?, price = ?, outcome = ?
+        WHERE id = ?
+    """
+
+    selection.price = Decimal(selection.price)
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(query, (selection.name, selection.event, selection.active, str(selection.price), selection.outcome, selection_id))
         conn.commit()
         selection_id = cursor.lastrowid
         conn.close()
