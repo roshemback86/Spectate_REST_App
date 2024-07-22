@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class StatusEnum(str, Enum):
     PENDING = "PENDING"
     STARTED = "STARTED"

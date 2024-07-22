@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 
 from .routers import sport, event, selection
-
+#TODO: проверить, что возвращает поиск, проверить все эндпоинты апдейт и поиск
 app = FastAPI()
 app.include_router(sport.router)
 app.include_router(event.router)
