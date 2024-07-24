@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException
 from spectate_rest_app.database import get_db_connection
 from spectate_rest_app.schemas import Event
-from spectate_rest_app.services import get_slug, fetch_logos
+from spectate_rest_app.services import get_slug, fetch_logos, update_sport_is_active
 import sqlite3
 from spectate_rest_app.consts import StatusEnum
 from datetime import datetime
@@ -27,7 +27,7 @@ async def create_event(event: Event):
         )
 
     slug = get_slug(event.name)
-    active = event.active if event.active is not None else True
+    active = False
     teams = [team.strip() for team in event.name.split("vs")]
     logos = await fetch_logos(teams)
 
@@ -55,6 +55,7 @@ async def create_event(event: Event):
         conn.commit()
         event_id = cursor.lastrowid
         conn.close()
+        update_sport_is_active(event.sport)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -106,6 +107,7 @@ async def update_event(event_id: int, event: Event):
         )
         conn.commit()
         conn.close()
+        update_sport_is_active(event.sport)
         return {"id": event_id}
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")

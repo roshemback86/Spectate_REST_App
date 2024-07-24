@@ -8,6 +8,8 @@ import sqlite3
 
 from decimal import Decimal
 
+from spectate_rest_app.services import update_event_is_active
+
 router = APIRouter()
 
 
@@ -46,6 +48,7 @@ async def create_selection(selection: Selection):
         conn.commit()
         selection_id = cursor.lastrowid
         conn.close()
+        update_event_is_active(selection.event)
         return {"id": selection_id}
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
@@ -85,6 +88,7 @@ async def update_selection(selection_id: int, selection: Selection):
         )
         conn.commit()
         conn.close()
+        update_event_is_active(selection.event)
         return {"id": selection_id}
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")

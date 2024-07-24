@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException
 from spectate_rest_app.database import get_db_connection
 from spectate_rest_app.schemas import Sport
 import sqlite3
-from spectate_rest_app.services import get_slug
+from spectate_rest_app.services import get_slug, sport_is_active
 
 router = APIRouter()
 
@@ -15,7 +15,7 @@ async def create_sport(sport: Sport):
     if not sport.name:
         raise HTTPException(status_code=400, detail="Name is required")
     slug = get_slug(sport.name)
-    active = sport.active if sport.active is not None else True
+    active = sport_is_active(sport.name)
 
     query = """
         INSERT INTO sport (name, slug, active) 
@@ -43,7 +43,7 @@ async def update_sport(sport_id: int, sport: Sport):
             WHERE id = ?
     """
     slug = get_slug(sport.name)
-    active = sport.active if sport.active is not None else True
+    active = False
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
