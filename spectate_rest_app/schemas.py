@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field
 from .consts import StatusEnum, OutcomeEnum
 from typing import List, Optional
 from datetime import datetime
-# TODO: Проверить какие типы(связи) нужно использовать типы на строках 21, 29
 
 from decimal import Decimal
 
