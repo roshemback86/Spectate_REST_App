@@ -13,7 +13,7 @@ from spectate_rest_app.services import update_event_is_active
 router = APIRouter()
 
 
-@router.post("/create_selection")
+@router.post("/selection", status_code=201)
 async def create_selection(selection: Selection):
     """Create a new selection"""
     if (

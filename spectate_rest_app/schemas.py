@@ -9,8 +9,8 @@ from decimal import Decimal
 
 class Sport(BaseModel):
     name: str
-    slug: Optional[str] = Field(None, example="football")
-    active: Optional[bool] = Field(True, example=True)
+    slug: Optional[str] = Field(None, json_schema_extra={"example": "football"})
+    active: Optional[bool] = Field(True, json_schema_extra={"example": "football"})
 
 
 class Event(BaseModel):
